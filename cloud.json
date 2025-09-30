@@ -1,0 +1,29 @@
+{
+  "server1": {
+    "users": [
+      "Mary",
+      "john",
+      "Michell"
+    ],
+    "load": 3,
+    "status": "Unhealthy"
+  },
+  "server2": {
+    "users": [
+      "May",
+      "Mary",
+      "john"
+    ],
+    "load": 3,
+    "status": "Unhealthy"
+  },
+  "server3": {
+    "users": [
+      "Jeremy",
+      "Joy",
+      "john"
+    ],
+    "load": 3,
+    "status": "Unhealthy"
+  }
+}
