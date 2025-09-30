@@ -1,7 +1,7 @@
 //????
 const fs = require("fs")
 const path = require("path");
-const data = require("./data")
+const data = require("./data.js")
 const { log } = require("console")
 const Accounts = { //databse for users account assume that they are registered already 
     user1: "john",
@@ -46,7 +46,7 @@ function logins(users_name){
 
 
 
-let proccess_login_request = (user) => {
+function proccess_login_request(user) {
   
     let data = fs.readFileSync(serversFile)
     let cloud_data = JSON.parse(data)
@@ -94,17 +94,12 @@ fs.writeFileSync(serversFile, JSON.stringify(c_data, null, 2));
 
 };
 
-logins(Accounts["user4"])
-logins(Accounts["user1"])
-
-logins(Accounts["user3"])
-logins(Accounts["user7"])
-
-logins(Accounts["user12"])
-logins(Accounts["user11"])
 
 
-console.log("Some changes has been made!")
+
+
+
+
 
 
 
