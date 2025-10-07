@@ -99,7 +99,7 @@ fs.writeFileSync(serversFile, JSON.stringify(c_data, null, 2));
 
 
 
-
+console.log("i made changes")
 
 
 
@@ -111,4 +111,5 @@ const str = JSON.stringify(obj);
 console.log(str); // {"name":"Krissj","age":20}
 const ob = JSON.parse(str)
 console.log(ob)
+
 */
