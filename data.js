@@ -56,8 +56,8 @@ function proccess_login_request(user) {
         if(server_maintenance(serID[num], cloud_data)){
                 //Servers[list[num]]["users"].push(user)
                 //Servers[list[num]]["load"] += 1
-                //cloud_data[list[num]]["users"].push(user)
-                //cloud_data[list[num]]["load"] += 1
+                cloud_data[serID[num]]["users"].push(user)
+                cloud_data[serID[num]]["load"] += 1
           
                 
                fs.writeFileSync(serversFile, JSON.stringify(cloud_data, null, 2));
@@ -66,8 +66,10 @@ function proccess_login_request(user) {
                 console.log("")     
 
         }else { 
-
-             cloud_data[serverID] = {users: [], load: 0, status: "Healthy"}
+              let new_serverID = serverID
+              cloud_data[new_serverID] = {users: [], load: 0, status: "Healthy"}
+              cloud_data[new_serverID]["users"].push(user)
+               cloud_data[new_serverID]["load"] += 1
               fs.writeFileSync(serversFile, JSON.stringify(cloud_data, null, 2));
         }
     
@@ -86,7 +88,7 @@ let c_data = JSON.parse(data)
 
 let clean = c_data[ser]["users"] = []//empty the array
 //clean.splice(0,clean.length)
-let clean_load = c_data[ser]["load"] = 4
+let clean_load = c_data[ser]["load"] = 0
 console.log("data has been wiped")
 
 fs.writeFileSync(serversFile, JSON.stringify(c_data, null, 2));
@@ -94,8 +96,8 @@ fs.writeFileSync(serversFile, JSON.stringify(c_data, null, 2));
 };
 
 
-logins(Accounts["user1"])
-//clearing_data(3561)
+//logins(Accounts["user1"])
+//clearing_data(7774)
 
 
 
