@@ -22,19 +22,19 @@ const Accounts = { //databse for users account assume that they are registered a
 
 
 const serversFile = path.join(__dirname, "cloud.json");
+let serverID = Math.floor(Math.random() * 10000)
 
 if (!fs.existsSync(serversFile)) {
   let Servers = {
-    server1: { users: [], load: 0, status: "Healthy" },
-    server2: { users: [], load: 0, status: "Healthy" },
-    server3: { users: [], load: 0, status: "Healthy" }
+    [serverID]: { users: [], load: 0, status: "Healthy" }
   };
   fs.writeFileSync(serversFile, JSON.stringify(Servers, null, 2));
 }
 
-
+let ser = fs.readFileSync(serversFile)
+let ser_data = JSON.parse(ser)
                                                                                     
-let list = ["server1","server2","server3"]
+let serID = Object.keys(ser_data)
 
 
 
@@ -51,25 +51,26 @@ function proccess_login_request(user) {
     let data = fs.readFileSync(serversFile)
     let cloud_data = JSON.parse(data)
 
-  let num = Math.floor(Math.random() * list.length)
+  let num = Math.floor(Math.random() * serID)
 
-        if(server_maintenance(list[num], cloud_data)){
+        if(server_maintenance(serID[num], cloud_data)){
                 //Servers[list[num]]["users"].push(user)
                 //Servers[list[num]]["load"] += 1
-                cloud_data[list[num]]["users"].push(user)
-                cloud_data[list[num]]["load"] += 1
-
+                cloud_data[serID[num]]["users"].push(user)
+                cloud_data[serID[num]]["load"] += 1
+          
+                
                fs.writeFileSync(serversFile, JSON.stringify(cloud_data, null, 2));
-                console.log(`A user named: ${user} has been directed to ${list[num]}`)
-                console.log(`${list[num]} load status: ${cloud_data[list[num]]["load"]}`)
+                console.log(`A user named: ${user} has been directed to ${serID[num]}`)
+                console.log(`${list[num]} load status: ${cloud_data[serID[num]]["load"]}`)
                 console.log("")     
 
-        }else {
-                cloud_data[list[num]]["status"] = "Unhealthy"
-                fs.writeFileSync(serversFile, JSON.stringify(cloud_data, null, 2));
-                console.log(`Server failure on ${list[num]}`)
-                console.log(`${list[num]} status: Data wiped out (Server is unvailable)`)
-                console.log("")
+        }else { 
+              let new_serverID = serverID
+              cloud_data[new_serverID] = {users: [], load: 0, status: "Healthy"}
+              cloud_data[new_serverID]["users"].push(user)
+               cloud_data[new_serverID]["load"] += 1
+              fs.writeFileSync(serversFile, JSON.stringify(cloud_data, null, 2));
         }
     
 }
@@ -78,7 +79,7 @@ function proccess_login_request(user) {
 
 
 
-let server_maintenance = (server, data) =>  data[server]["load"] < 3 //million users
+let server_maintenance = (serID, data) =>  data[serID]["load"] < 3 //million users
 
 
 const clearing_data = (ser)  => {
@@ -87,7 +88,7 @@ let c_data = JSON.parse(data)
 
 let clean = c_data[ser]["users"] = []//empty the array
 //clean.splice(0,clean.length)
-let clean_load = c_data[ser]["load"] = 0
+let clean_load = c_data[ser]["load"] = 4
 console.log("data has been wiped")
 
 fs.writeFileSync(serversFile, JSON.stringify(c_data, null, 2));
@@ -95,8 +96,8 @@ fs.writeFileSync(serversFile, JSON.stringify(c_data, null, 2));
 };
 
 
-
-
+logins(Accounts["user2"])
+//clearing_data(3483) 
 
 
 
@@ -111,4 +112,5 @@ const str = JSON.stringify(obj);
 console.log(str); // {"name":"Krissj","age":20}
 const ob = JSON.parse(str)
 console.log(ob)
+
 */
