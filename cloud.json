@@ -1,0 +1,14 @@
+{
+  "7774": {
+    "users": [],
+    "load": 4,
+    "status": "Healthy"
+  },
+  "9137": {
+    "users": [
+      "john"
+    ],
+    "load": 1,
+    "status": "Healthy"
+  }
+}

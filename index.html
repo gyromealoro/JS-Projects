@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mini Server Manager</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f5f5f5; padding:20px; }
+    h1 { color:#333; }
+    .server {
+      background:#fff; 
+      padding:15px; 
+      margin:10px 0; 
+      border-radius:8px; 
+      box-shadow:0 2px 5px rgba(0,0,0,0.1);
+    }
+    button { margin-top:10px; padding:8px 12px; border:none; border-radius:5px; cursor:pointer; }
+    button.login { background:#4CAF50; color:white; }
+    button.clear { background:#f44336; color:white; }
+    input { padding:6px; }
+  </style>
+</head>
+<body>
+  <h1>Server Dashboard</h1>
+  <input id="username" type="text" placeholder="Enter username">
+  <button class="login" onclick="loginUser()">Login</button>
+  <div id="servers"></div>
+
+  <script>
+    async function fetchServers() {
+      const res = await fetch('/servers');
+      const data = await res.json();
+      const container = document.getElementById('servers');
+      container.innerHTML = '';
+      for (let [name, info] of Object.entries(data)) {
+        container.innerHTML += `
+          <div class="server">
+            <h2>${name}</h2>
+            <p>Users: ${info.users.join(', ') || 'None'}</p>
+            <p>Load: ${info.load}</p>
+            <button class="clear" onclick="clearServer('${name}')">Clear ${name}</button>
+          </div>
+        `;
+      }
+    }
+
+    async function loginUser() {
+      const username = document.getElementById('username').value;
+      if (!username) return alert("Enter a username first");
+      await fetch('/login', {
+        method:'POST',
+        headers: { 'Content-Type':'application/json' },
+        body: JSON.stringify({ user: username })
+      });
+      fetchServers();
+    }
+
+    async function clearServer(server) {
+      await fetch(`/clear/${server}`, { method:'POST' });
+      fetchServers();
+    }
+
+    fetchServers();
+  </script>
+</body>
+</html>
